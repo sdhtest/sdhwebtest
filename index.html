@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Detector de IPs</title>
+	<script>
+		function checkServer() {
+			// Enviar una solicitud de prueba al servidor
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', '/');
+			xhr.timeout = 5000; // Configurar el tiempo de espera en milisegundos
+			xhr.onload = function() {
+				// El servidor respondió, mostrar las IPs de los visitantes
+				var ips = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
+				document.getElementById('ips').innerHTML = ips;
+				document.getElementById('status').innerHTML = "";
+			}
+			xhr.onerror = function() {
+				// El servidor no respondió, mostrar un mensaje de error en rojo
+				document.getElementById('status').innerHTML = "El servidor no está respondiendo";
+				document.getElementById('status').style.color = "red";
+			}
+			xhr.send();
+		}
+		// Realizar una comprobación del servidor cada 5 segundos
+		setInterval(checkServer, 5000);
+	</script>
+</head>
+<body>
+	<h1>Bienvenido a mi sitio web</h1>
+	<p>IPs de los visitantes: <span id="ips"></span></p>
+	<p><span id="status"></span></p>
+</body>
+</html>
